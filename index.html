@@ -116,16 +116,34 @@
       return urlParams.get(param);
     }
 
+    // Array of lovely messages
+    const messages = [
+      "You are the reason I smile every day. 💖",
+      "With you, every moment is magical. ✨",
+      "You light up my world like nobody else. 🌟",
+      "You are my sunshine on a rainy day. ☀️",
+      "Thinking of you makes my heart flutter. 🦋",
+      "You are beautiful inside and out. 🌹",
+      "I'm so lucky to have you in my life. 🍀",
+      "Every love story is beautiful, but ours is my favorite. 📖",
+      "You are my heart's favorite melody. 🎶",
+      "You make every day brighter. 🌈",
+      "No one makes me happier than you do. 😊",
+      "You are truly special to me. 💝",
+      "Your smile is my favorite thing in the world. 😍"
+    ];
+
     // Show pretty message if ?name= is present
     function maybeShowMessage() {
       const name = getQueryParam("name");
       if (name) {
         document.getElementById('mainContainer').style.display = "none";
         document.getElementById('prettyContainer').style.display = "block";
+        // Pick a random message
+        const msgIdx = Math.floor(Math.random() * messages.length);
+        const message = messages[msgIdx];
         document.getElementById('msg').innerHTML =
-          `Hey <span style="color:#36d1c4;">${decodeURIComponent(name)}</span>!<br>
-          You are truly special and you light up the world.<br>
-          <span style="color:#5f2c82;">Stay amazing! 💖</span>`;
+          `Hey <span style="color:#36d1c4;">${decodeURIComponent(name)}</span>!<br>${message}`;
       }
     }
 
@@ -154,4 +172,4 @@
     maybeShowMessage();
   </script>
 </body>
-  </html>
+</html>
