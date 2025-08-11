@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pretty Message Generator - by Ezekiel Kamau</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+      font-family: 'Segoe UI', Arial, sans-serif;
+      min-height: 100vh;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .container, .pretty-container {
+      background: linear-gradient(135deg,#f6d365 0%, #fda085 100%);
+      box-shadow: 0 8px 32px rgba(214, 51, 108, 0.16);
+      border-radius: 24px;
+      width: 370px;
+      max-width: 95vw;
+      padding: 2.5em 2em;
+      text-align: center;
+      margin: 2em 0;
+    }
+    h1 {
+      color: #5f2c82;
+      margin-bottom: 1em;
+    }
+    input[type="text"] {
+      padding: 0.7em 1em;
+      border-radius: 10px;
+      border: none;
+      width: 80%;
+      margin-bottom: 1em;
+      font-size: 1.1em;
+      outline: none;
+      box-sizing: border-box;
+    }
+    button {
+      background: linear-gradient(135deg,#36d1c4 0%, #5b86e5 100%);
+      color: #fff;
+      padding: 0.7em 2em;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.1em;
+      cursor: pointer;
+      transition: background 0.3s;
+      margin-bottom: 1em;
+    }
+    button:hover {
+      background: linear-gradient(135deg, #5b86e5 0%, #36d1c4 100%);
+    }
+    .link-box {
+      margin-top: 1.3em;
+      display: none;
+    }
+    .owner {
+      margin-top: 2em;
+      color: #ff5858;
+      font-weight: bold;
+      font-size: 1em;
+      opacity: 0.7;
+    }
+    /* Pretty message styles */
+    .pretty-message {
+      background: linear-gradient(135deg, #abecd6 0%, #fbed96 100%);
+      color: #ff5858;
+      padding: 2.5em 2em;
+      border-radius: 30px;
+      font-size: 2em;
+      font-weight: bold;
+      box-shadow: 0 12px 32px #d6336c22;
+      display: inline-block;
+      text-align: center;
+      max-width: 80vw;
+      animation: pop-in 1s cubic-bezier(.68,-0.55,.27,1.55);
+    }
+    @keyframes pop-in {
+      0% { transform: scale(0.7); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .pretty-owner {
+      margin-top: 2em;
+      color: #5f2c82;
+      font-size: 1.1em;
+      opacity: 0.8;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <!-- Message Container (hidden or shown depending on URL) -->
+  <div class="pretty-container" id="prettyContainer" style="display:none">
+    <div class="pretty-message" id="msg"></div>
+    <div class="pretty-owner">Made with ❤️ by Ezekiel Kamau</div>
+  </div>
+  <!-- Name Input Container -->
+  <div class="container" id="mainContainer">
+    <h1>Send a Pretty Message 💖</h1>
+    <input id="yourName" type="text" placeholder="Enter your name" maxlength="32" />
+    <br>
+    <button onclick="generateLink()">Get Shareable Link</button>
+    <div class="link-box" id="linkBox">
+      <p>Copy and share this link:</p>
+      <input id="messageLink" type="text" readonly style="width:95%; padding: 0.5em; border-radius: 8px; border: 1px solid #ccc;" />
+      <button onclick="copyLink()">Copy</button>
+    </div>
+    <div class="owner">Created by Ezekiel Kamau</div>
+  </div>
+  <script>
+    // Helper to get query string parameter
+    function getQueryParam(param) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param);
+    }
+
+    // Show pretty message if ?name= is present
+    function maybeShowMessage() {
+      const name = getQueryParam("name");
+      if (name) {
+        document.getElementById('mainContainer').style.display = "none";
+        document.getElementById('prettyContainer').style.display = "block";
+        document.getElementById('msg').innerHTML =
+          `Hey <span style="color:#36d1c4;">${decodeURIComponent(name)}</span>!<br>
+          You are truly special and you light up the world.<br>
+          <span style="color:#5f2c82;">Stay amazing! 💖</span>`;
+      }
+    }
+
+    // Generate shareable link
+    function generateLink() {
+      const name = encodeURIComponent(document.getElementById('yourName').value.trim());
+      if (!name) {
+        alert("Please enter your name!");
+        return;
+      }
+      // This will work no matter where you deploy the file
+      const baseUrl = window.location.origin + window.location.pathname;
+      const link = baseUrl + '?name=' + name;
+      document.getElementById('messageLink').value = link;
+      document.getElementById('linkBox').style.display = "block";
+    }
+
+    // Copy link to clipboard
+    function copyLink() {
+      const input = document.getElementById('messageLink');
+      input.select();
+      document.execCommand('copy');
+      alert('Link copied!');
+    }
+
+    maybeShowMessage();
+  </script>
+</body>
+  </html>
