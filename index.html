@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Pretty Message Generator - by Ezekiel Kamau</title>
+  <title>Pretty Message Generator</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body {
@@ -129,7 +129,6 @@
     .show-confirm {
       opacity: 1 !important;
     }
-
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(20px);}
       to { opacity: 1; transform: translateY(0);}
@@ -138,7 +137,6 @@
       0% { transform: scale(0.5); opacity: 0;}
       100% { transform: scale(1); opacity: 1;}
     }
-
     .owner {
       margin-top: 2em;
       color: #ff5858;
@@ -170,13 +168,41 @@
       opacity: 0.8;
       text-align: center;
     }
+    .audio-player {
+      margin: 1.5em auto 0.5em auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+    .audio-player button {
+      background: linear-gradient(135deg,#ff5858 0%, #ffc371 100%);
+      color: #fff;
+      padding: 0.6em 2em;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.05em;
+      cursor: pointer;
+      margin-top: 0.7em;
+      font-weight: bold;
+      box-shadow: 0 3px 12px #ff585844;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .audio-player button:hover {
+      background: linear-gradient(135deg,#ffc371 0%, #ff5858 100%);
+      transform: scale(1.05);
+    }
   </style>
 </head>
 <body>
   <!-- Message Container (hidden or shown depending on URL) -->
   <div class="pretty-container" id="prettyContainer" style="display:none">
     <div class="pretty-message" id="msg"></div>
-    <div class="pretty-owner">Made with ❤️ by Ezekiel Kamau</div>
+    <div class="audio-player" id="audioPlayer" style="display:none;">
+      <audio id="loveSong" src="https://cdn.pixabay.com/audio/2022/03/15/audio_115b9bfa0a.mp3"></audio>
+      <button onclick="playSong()" id="playBtn">🎵 Play Love Song</button>
+    </div>
+    <div class="pretty-owner"></div>
   </div>
   <!-- Name Input Container -->
   <div class="container" id="mainContainer">
@@ -194,7 +220,7 @@
       </div>
       <div id="copyConfirm" class="copy-confirm">Copied!</div>
     </div>
-    <div class="owner">Created by Ezekiel Kamau</div>
+    <div class="owner"></div>
   </div>
   <script>
     function getQueryParam(param) {
@@ -226,6 +252,7 @@
         const message = messages[msgIdx];
         document.getElementById('msg').innerHTML =
           `<span style="color:#36d1c4;">${decodeURIComponent(sender)}</span> says:<br>"${message}"`;
+        document.getElementById('audioPlayer').style.display = "flex";
       }
     }
     function generateLink() {
@@ -249,6 +276,14 @@
       setTimeout(() => {
         confirm.classList.remove('show-confirm');
       }, 1500);
+    }
+    function playSong() {
+      const audio = document.getElementById('loveSong');
+      audio.play();
+      document.getElementById('playBtn').innerText = '🎶 Playing...';
+      audio.onended = () => {
+        document.getElementById('playBtn').innerText = '🎵 Play Love Song';
+      }
     }
     maybeShowMessage();
   </script>
