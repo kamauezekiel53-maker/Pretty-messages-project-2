@@ -55,8 +55,6 @@
       background: linear-gradient(135deg, #5b86e5 0%, #36d1c4 100%);
       transform: scale(1.04);
     }
-
-    /* Enhanced Link Box Styles */
     .link-box {
       margin-top: 1.3em;
       display: none;
@@ -183,7 +181,7 @@
   <!-- Name Input Container -->
   <div class="container" id="mainContainer">
     <h1>Send a Pretty Message 💖</h1>
-    <input id="yourName" type="text" placeholder="Enter your name" maxlength="32" />
+    <input id="senderName" type="text" placeholder="Enter your name" maxlength="32" />
     <br>
     <button onclick="generateLink()">Get Shareable Link</button>
     <!-- Enhanced Link Box -->
@@ -199,7 +197,6 @@
     <div class="owner">Created by Ezekiel Kamau</div>
   </div>
   <script>
-    // Helper to get query string parameter
     function getQueryParam(param) {
       const urlParams = new URLSearchParams(window.location.search);
       return urlParams.get(param);
@@ -220,35 +217,29 @@
       "You are truly special to me. 💝",
       "Your smile is my favorite thing in the world. 😍"
     ];
-    // Show pretty message if ?name= is present
     function maybeShowMessage() {
-      const name = getQueryParam("name");
-      if (name) {
+      const sender = getQueryParam("sender");
+      if (sender) {
         document.getElementById('mainContainer').style.display = "none";
         document.getElementById('prettyContainer').style.display = "block";
-        // Pick a random message
         const msgIdx = Math.floor(Math.random() * messages.length);
         const message = messages[msgIdx];
         document.getElementById('msg').innerHTML =
-          `Hey <span style="color:#36d1c4;">${decodeURIComponent(name)}</span>!<br>${message}`;
+          `<span style="color:#36d1c4;">${decodeURIComponent(sender)}</span> says:<br>"${message}"`;
       }
     }
-    // Generate shareable link
     function generateLink() {
-      const name = encodeURIComponent(document.getElementById('yourName').value.trim());
-      if (!name) {
+      const sender = encodeURIComponent(document.getElementById('senderName').value.trim());
+      if (!sender) {
         alert("Please enter your name!");
         return;
       }
-      // This will work no matter where you deploy the file
       const baseUrl = window.location.origin + window.location.pathname;
-      const link = baseUrl + '?name=' + name;
+      const link = baseUrl + '?sender=' + sender;
       document.getElementById('messageLink').value = link;
       document.getElementById('linkBox').style.display = "block";
-      // Hide confirm message every time you generate a new link
       document.getElementById('copyConfirm').classList.remove('show-confirm');
     }
-    // Copy link to clipboard
     function copyLink() {
       const input = document.getElementById('messageLink');
       input.select();
